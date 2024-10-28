@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -110,7 +109,7 @@ class _ImageFilterState extends State<ImageFilter>
         await Future<void>.delayed(const Duration(milliseconds: 100));
         continue;
       }
-      LogUtils.log("_runningCount: ${_runningCount}");
+      LogUtils.log("_runningCount: $_runningCount");
 
       final func = _queuedApplyFilterFuncList.removeFirst();
       _runningCount++;

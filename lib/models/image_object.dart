@@ -42,6 +42,15 @@ class ImageObject {
 
 /// Detected object
 class DetectObject {
+
+  /// Constructor
+  DetectObject(
+      {required this.label,
+      this.confidence,
+      this.x = 0,
+      this.y = 0,
+      this.w = 0,
+      this.h = 0});
   /// Label
   String label;
 
@@ -59,13 +68,4 @@ class DetectObject {
 
   /// H value
   int h;
-
-  /// Constructor
-  DetectObject(
-      {required this.label,
-      this.confidence,
-      this.x = 0,
-      this.y = 0,
-      this.w = 0,
-      this.h = 0});
 }

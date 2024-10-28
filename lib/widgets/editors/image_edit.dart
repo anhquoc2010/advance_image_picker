@@ -1,10 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:image_editor/image_editor.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
@@ -16,14 +14,14 @@ import '../common/portrait_mode_mixin.dart';
 /// Image editing widget, such as cropping, rotating and scaling.
 class ImageEdit extends StatefulWidget {
   /// Default constructor for the image editing widget.
-  const ImageEdit(
-      {final Key? key,
-      required this.file,
-      required this.title,
-      this.configs,
-      this.maxWidth = 1080,
-      this.maxHeight = 1920})
-      : super(key: key);
+  const ImageEdit({
+    final Key? key,
+    required this.file,
+    required this.title,
+    this.configs,
+    this.maxWidth = 1080,
+    this.maxHeight = 1920,
+  }) : super(key: key);
 
   @override
   _ImageEditState createState() => _ImageEditState();
@@ -44,8 +42,7 @@ class ImageEdit extends StatefulWidget {
   final ImagePickerConfigs? configs;
 }
 
-class _ImageEditState extends State<ImageEdit>
-    with PortraitStatefulModeMixin<ImageEdit> {
+class _ImageEditState extends State<ImageEdit> with PortraitStatefulModeMixin<ImageEdit> {
   double _contrast = 0;
   double _brightness = 0;
   double _saturation = 0;
@@ -88,14 +85,9 @@ class _ImageEditState extends State<ImageEdit>
     final AppBarTheme appBarTheme = AppBarTheme.of(context);
     final Color _appBarBackgroundColor = _configs.appBarBackgroundColor ??
         appBarTheme.backgroundColor ??
-        (colorScheme.brightness == Brightness.dark
-            ? colorScheme.surface
-            : colorScheme.primary);
-    final Color _appBarTextColor = _configs.appBarTextColor ??
-        appBarTheme.foregroundColor ??
-        (colorScheme.brightness == Brightness.dark
-            ? colorScheme.onSurface
-            : colorScheme.onPrimary);
+        (colorScheme.brightness == Brightness.dark ? colorScheme.surface : colorScheme.primary);
+    final Color _appBarTextColor =
+        _configs.appBarTextColor ?? appBarTheme.foregroundColor ?? (colorScheme.brightness == Brightness.dark ? colorScheme.onSurface : colorScheme.onPrimary);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -107,10 +99,7 @@ class _ImageEditState extends State<ImageEdit>
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(child: _buildImageViewer(context)),
-          _buildAdjustControls(context)
-        ],
+        children: [Expanded(child: _buildImageViewer(context)), _buildAdjustControls(context)],
       ),
     );
   }
@@ -131,8 +120,7 @@ class _ImageEditState extends State<ImageEdit>
                   _controlExpanded = false;
                 });
               },
-              child: Row(
-                  children: const [Spacer(), Icon(Icons.keyboard_arrow_down)]),
+              child: const Row(children: [Spacer(), Icon(Icons.keyboard_arrow_down)]),
             ),
             const Divider(),
             _buildContrastAdjustControl(context),
@@ -151,19 +139,15 @@ class _ImageEditState extends State<ImageEdit>
         child: Container(
             color: const Color(0xFF212121),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                      "${_configs.textContrast}: "
-                      "${_contrast.toString()}",
-                      style: textStyle),
-                  Text("${_configs.textBrightness}: ${_brightness.toString()}",
-                      style: textStyle),
-                  Text("${_configs.textSaturation}: ${_saturation.toString()}",
-                      style: textStyle),
-                  const Icon(Icons.keyboard_arrow_up)
-                ])),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(
+                  "${_configs.textContrast}: "
+                  "$_contrast",
+                  style: textStyle),
+              Text("${_configs.textBrightness}: $_brightness", style: textStyle),
+              Text("${_configs.textSaturation}: $_saturation", style: textStyle),
+              const Icon(Icons.keyboard_arrow_up)
+            ])),
       );
     }
   }
@@ -214,9 +198,7 @@ class _ImageEditState extends State<ImageEdit>
   Future<void> _processImage() async {
     if (_isProcessing) return;
 
-    if (_contrastValues.length > 1 ||
-        _brightnessValues.length > 1 ||
-        _saturationValues.length > 1) {
+    if (_contrastValues.length > 1 || _brightnessValues.length > 1 || _saturationValues.length > 1) {
       _isProcessing = true;
 
       // Get last value
@@ -235,8 +217,7 @@ class _ImageEditState extends State<ImageEdit>
         _saturationValues.removeRange(0, _saturationValues.length - 1);
       }
 
-      await _processImageWithOptions(contrast, brightness, saturation)
-          .then((value) {
+      await _processImageWithOptions(contrast, brightness, saturation).then((value) {
         _isProcessing = false;
 
         setState(() {
@@ -249,14 +230,12 @@ class _ImageEditState extends State<ImageEdit>
     }
   }
 
-  Future<Uint8List?> _processImageWithOptions(
-      double contrast, double brightness, double saturation) async {
+  Future<Uint8List?> _processImageWithOptions(double contrast, double brightness, double saturation) async {
     final ImageEditorOption option = ImageEditorOption();
     option.addOption(ColorOption.brightness(_calColorOptionValue(brightness)));
     option.addOption(ColorOption.contrast(_calColorOptionValue(contrast)));
     option.addOption(ColorOption.saturation(_calColorOptionValue(saturation)));
-    return ImageEditor.editImage(
-        image: _orgImageBytes!, imageEditorOption: option);
+    return ImageEditor.editImage(image: _orgImageBytes!, imageEditorOption: option);
   }
 
   double _calColorOptionValue(double value) {
@@ -268,11 +247,7 @@ class _ImageEditState extends State<ImageEdit>
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          Text(_configs.textContrast, style: textStyle),
-          const Spacer(),
-          Text(_contrast.toString(), style: textStyle)
-        ]),
+        Row(children: [Text(_configs.textContrast, style: textStyle), const Spacer(), Text(_contrast.toString(), style: textStyle)]),
         SliderTheme(
           data: SliderThemeData(
             trackShape: CustomTrackShape(),
@@ -304,11 +279,7 @@ class _ImageEditState extends State<ImageEdit>
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          Text(_configs.textBrightness, style: textStyle),
-          const Spacer(),
-          Text(_brightness.toString(), style: textStyle)
-        ]),
+        Row(children: [Text(_configs.textBrightness, style: textStyle), const Spacer(), Text(_brightness.toString(), style: textStyle)]),
         SliderTheme(
           data: SliderThemeData(
             trackShape: CustomTrackShape(),
@@ -340,11 +311,7 @@ class _ImageEditState extends State<ImageEdit>
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          Text(_configs.textSaturation, style: textStyle),
-          const Spacer(),
-          Text(_saturation.toString(), style: textStyle)
-        ]),
+        Row(children: [Text(_configs.textSaturation, style: textStyle), const Spacer(), Text(_saturation.toString(), style: textStyle)]),
         SliderTheme(
           data: SliderThemeData(
             trackShape: CustomTrackShape(),

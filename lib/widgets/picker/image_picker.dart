@@ -308,7 +308,7 @@ class _ImagePickerState extends State<ImagePicker>
         setState(() {});
       }
     }).catchError((e) {
-      LogUtils.log('Camera error ${e.toString()}');
+      LogUtils.log('Camera error ${e}');
     });
   }
 
@@ -365,7 +365,7 @@ class _ImagePickerState extends State<ImagePicker>
         LogUtils.log('PhotoGallery permission not allowed');
       }
     } catch (e) {
-      LogUtils.log('PhotoGallery error ${e.toString()}');
+      LogUtils.log('PhotoGallery error ${e}');
     }
   }
 
@@ -425,8 +425,7 @@ class _ImagePickerState extends State<ImagePicker>
                   actions: <Widget>[
                     TextButton(
                       style: TextButton.styleFrom(
-                        primary: Colors.black87,
-                        minimumSize: const Size(88, 36),
+                        foregroundColor: Colors.black87, minimumSize: const Size(88, 36),
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(2)),
@@ -437,8 +436,7 @@ class _ImagePickerState extends State<ImagePicker>
                     ),
                     TextButton(
                       style: TextButton.styleFrom(
-                        primary: Colors.black87,
-                        minimumSize: const Size(88, 36),
+                        foregroundColor: Colors.black87, minimumSize: const Size(88, 36),
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(2)),
@@ -587,10 +585,10 @@ class _ImagePickerState extends State<ImagePicker>
                     }
                   : null,
               style: ButtonStyle(
-                elevation: MaterialStateProperty.all(5),
-                backgroundColor: MaterialStateProperty.all(
+                elevation: WidgetStateProperty.all(5),
+                backgroundColor: WidgetStateProperty.all(
                     _selectedImages.isNotEmpty ? buttonColor : Colors.grey),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                shape: WidgetStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10))),
               ),
               child: Row(children: [
@@ -669,8 +667,7 @@ class _ImagePickerState extends State<ImagePicker>
   Widget _buildZoomRatioButton(BuildContext context) {
     return TextButton(
         style: TextButton.styleFrom(
-          primary: Colors.black12,
-          minimumSize: const Size(88, 36),
+          foregroundColor: Colors.black12, minimumSize: const Size(88, 36),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           shape: const CircleBorder(),
         ),
@@ -689,8 +686,7 @@ class _ImagePickerState extends State<ImagePicker>
   Widget _buildExposureButton(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-        primary: Colors.black12,
-        minimumSize: const Size(88, 36),
+        foregroundColor: Colors.black12, minimumSize: const Size(88, 36),
         padding: const EdgeInsets.all(4),
         shape: const CircleBorder(),
       ),
@@ -712,8 +708,7 @@ class _ImagePickerState extends State<ImagePicker>
   Widget _buildImageFullOption(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-        primary: Colors.black12,
-        minimumSize: const Size(88, 36),
+        foregroundColor: Colors.black12, minimumSize: const Size(88, 36),
         padding: const EdgeInsets.symmetric(horizontal: 16),
         shape: const CircleBorder(),
       ),
@@ -748,8 +743,8 @@ class _ImagePickerState extends State<ImagePicker>
         if (widget.maxCount > 1) ...[
           Text(
               '$_textSelectedImagesTitle'
-              '${_selectedImages.length.toString()}'
-              ' / ${widget.maxCount.toString()}',
+              '${_selectedImages.length}'
+              ' / ${widget.maxCount}',
               style: const TextStyle(color: Colors.white, fontSize: 14)),
           if (_configs.textSelectedImagesGuide != '')
             Text(_configs.textSelectedImagesGuide,
@@ -1064,6 +1059,7 @@ class _ImagePickerState extends State<ImagePicker>
       _selectedImages.insert(_newIndex, items);
       return;
     });
+    return null;
   }
 
   /// Build reorderable selected image list.
@@ -1392,7 +1388,7 @@ class _ImagePickerState extends State<ImagePicker>
                                         : CameraLensDirection.front);
                             if (newDescription != null) {
                               LogUtils.log("Start new camera: "
-                                  "${newDescription.toString()}");
+                                  "${newDescription}");
                               await _onNewCameraSelected(newDescription);
                             }
                           }
@@ -1455,12 +1451,12 @@ class _ImagePickerState extends State<ImagePicker>
     if (_controller?.value == null) return const SizedBox();
 
     final ButtonStyle styleAuto = TextButton.styleFrom(
-      primary: _controller?.value.exposureMode == ExposureMode.auto
+      foregroundColor: _controller?.value.exposureMode == ExposureMode.auto
           ? Colors.orange
           : Colors.white,
     );
     final ButtonStyle styleLocked = TextButton.styleFrom(
-      primary: _controller?.value.exposureMode == ExposureMode.locked
+      foregroundColor: _controller?.value.exposureMode == ExposureMode.locked
           ? Colors.orange
           : Colors.white,
     );

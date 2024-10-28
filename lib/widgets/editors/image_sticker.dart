@@ -77,7 +77,7 @@ class _ImageStickerState extends State<ImageSticker>
 
     if (_configs.customStickers.isNotEmpty) {
       if (_configs.customStickerOnly) _stickerList.clear();
-      _stickerList.addAll(_configs.customStickers.map((e) => Image.asset(e)));
+      _stickerList.addAll(_configs.customStickers.map(Image.asset));
     }
   }
 
